@@ -1,4 +1,4 @@
-package com.rockchip.notedemo;
+package com.rockchip.notedemo.painter;
 
 import java.io.Serializable;
 import java.security.PublicKey;
@@ -23,6 +23,8 @@ public class PointStruct implements Serializable {
     public static final int PEN_BLUE_COLOR = 3;
     public static final int PEN_GREEN_COLOR = 4;
     public static final int PEN_RED_COLOR = 5;
+    public static final int PEN_GRAY_COLOR = 6;
+    public static final int PEN_CUSTOM_COLOR = 7;
 
     public int x;
     public int y;
@@ -48,4 +50,5 @@ public class PointStruct implements Serializable {
         this.eraserEnable = eraserEnable;
         this.strokesEnable = strokesEnable;
     }
+
 }

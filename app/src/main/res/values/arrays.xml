@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="penColorSpinner">
+        <item>黑色</item>
+        <item>灰色</item>
+        <item>白色</item>
+        <item>蓝色</item>
+        <item>绿色</item>
+        <item>红色</item>
+        <item>自定义</item>
+    </string-array>
+
+     <string-array name="penTypeSpinner">
+        <item>普通笔</item>
+        <item>钢笔</item>
+        <item>马克笔</item>
+     </string-array>
+
+     <string-array name="bgColorSpinner">
+         <item>背景白色</item>
+         <item>背景黑色</item>
+         <item>背景灰色</item>
+      </string-array>
+</resources>

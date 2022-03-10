@@ -1,2 +1,3 @@
+include ':paintsdk'
 include ':app'
-rootProject.name = "NoteDemo"
+rootProject.name = "NoteDemoAS"

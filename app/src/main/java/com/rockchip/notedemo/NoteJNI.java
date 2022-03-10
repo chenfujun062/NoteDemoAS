@@ -7,9 +7,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import java.math.BigDecimal;
+import com.rockchip.notedemo.painter.NoteView;
+import com.rockchip.notedemo.painter.PointStruct;
+
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class NoteJNI {
     private static final String TAG = "NoteJNI";
@@ -20,16 +21,16 @@ public class NoteJNI {
     private static Long mEndTime;
     private static Handler mPointHandler = null;
     public static final int MSG_FLAG_DRAW = 0;
-    private static int UI_Height;
     private static int mScreenW;
     private static int mScreenH;
     // JNI
     public native int native_init(Rect rect, boolean isFilterFixedArea, Rect filterRect);
     public native int native_exit();
     public native int native_clear(int clearMode);
-    public native int native_undo(int left, int top, int right, int bottom);
-    public native int native_redo(int left, int top, int right, int bottom);
+    public native int native_undo();
+    public native int native_redo();
     public native int native_redraw(int left, int top, int right, int bottom);
+    public native int native_redraw();
     public native int native_eraser(boolean isEraserEnable);
     public native int native_is_handwriting_enable(boolean isHangdWritingEnable);
     public native int native_recovery(int left, int top, int right, int bottom);
@@ -44,7 +45,10 @@ public class NoteJNI {
     public native int native_draw_bitmap(Bitmap bitmap, int deviceId, int left, int top, int right, int bottom);
     public native int native_sethandwriterects(Rect filterRect);
     public native int native_setnohandwriterects(Rect rect);
-    public native int native_set_pen_color_any(boolean isInitColor, int penColor,int A,int R,int G,int B);
+    public native int native_set_pen_color_any(int A,int R,int G,int B);
+//    public native int native_get_pen_color_any();
+    public native int native_draw_bg_by_color(int A, int R, int G, int B);
+
     public NoteJNI(Context context) {
         Log.d(TAG, "NoteJNI");
         mContext = context;
@@ -60,9 +64,8 @@ public class NoteJNI {
 
     public int init(Rect rect, boolean isFilterFixedArea, Rect filterRect) {
         Log.d(TAG, "Flash test : +++++++++ init() rect = " + rect + ",filterRect = "  + filterRect);
-        UI_Height = rect.top;
-        mScreenW = rect.right;
-        mScreenH = rect.bottom;
+        mScreenW = rect.right - rect.left;
+        mScreenH = rect.bottom - rect.top;
         int initStatus = native_init(rect, isFilterFixedArea, filterRect);
         return initStatus;
     }
@@ -74,17 +77,9 @@ public class NoteJNI {
 
     public static void receiveWritingDataEvent(int lastX, int lastY, int x, int y, int pressedValue, int penColor, int penWidth,
                                                int action, boolean isEraserEnable, boolean isStrokesEnable) {
-        //Log.d(TAG, "action: " + action);
-        //Convert handwriting data
-        /*int Android_X = mScreenW - y;
-        int Android_Y = x - UI_Height;
-        int Android_LastX = mScreenW - lastY;
-        int Android_LastY = lastX - UI_Height;
-         */
-
-
-        Log.d(TAG, "11-----------------------action-------------: " + action);
-        //return ;
+        /*Log.d(TAG, "receiveWritingDataEvent: lastX=" + lastX + ", lastY=" + lastY +
+                ", x=" + x + ",y=" + y + ", penWidth=" + penWidth + ", penColor=" + penColor
+                + ", isEraserEnable=" + isEraserEnable + ", action=" + action);*/
 
         int Android_X = y;
         int Android_Y = mScreenH - x;
@@ -96,8 +91,6 @@ public class NoteJNI {
         msg.what = MSG_FLAG_DRAW;
         msg.obj = (Object) pointStruct;
         msg.sendToTarget();
-
-
     }
 
     public void setPointHandler(Handler handler) {
